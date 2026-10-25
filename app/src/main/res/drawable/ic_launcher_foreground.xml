@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 心形 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,86 C32,70 20,57 20,44 C20,33 27,26 35,26 C43,26 50,32 54,38 C58,32 65,26 73,26 C81,26 88,33 88,44 C88,57 76,70 54,86 Z" />
+    <!-- 心电波 -->
+    <path
+        android:fillColor="#2B6CB0"
+        android:pathData="M30,54 L42,54 L46,44 L52,64 L58,50 L61,54 L78,54 L78,58 L30,58 Z" />
+</vector>
