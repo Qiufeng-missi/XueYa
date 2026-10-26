@@ -220,26 +220,32 @@
     var padL=42,padR=12,padT=16,padB=46;
     var plotW=cssW-padL-padR, plotH=cssH-padT-padB;
 
-    // y 范围
+    // y 范围（固定血压刻度）
     var vals=[];
     recs.forEach(function(r){ if(showSys)vals.push(r.sys); if(showDia)vals.push(r.dia); if(showHr)vals.push(r.hr); });
     if(!vals.length){ wrap.innerHTML='<div class="empty">请至少勾选一项指标</div>'; return; }
-    var minV=Math.min.apply(null,vals), maxV=Math.max.apply(null,vals);
-    minV=Math.floor((minV-6)/10)*10; maxV=Math.ceil((maxV+6)/10)*10;
-    if(maxV-minV<20){ maxV=minV+20; }
+    var minV=40, maxV=130;
 
     var n=recs.length;
     function xAt(i){ return padL + (n===1?plotW/2:(plotW*i/(n-1))); }
     function yAt(v){ return padT + plotH - plotH*((v-minV)/(maxV-minV)); }
 
-    // 网格 + y 轴刻度
+    // 参考区间淡黄填充（120-90、80-60）
+    var bands=[[120,90],[80,60]];
+    ctx.fillStyle="rgba(255,243,176,0.45)";
+    bands.forEach(function(b){
+      var yTop=yAt(b[0]), yBot=yAt(b[1]);
+      ctx.fillRect(padL, yTop, plotW, yBot-yTop);
+    });
+
+    // 网格 + y 轴刻度（固定刻度）
     ctx.strokeStyle="#eef2f7"; ctx.lineWidth=1; ctx.fillStyle="#9aa5b1"; ctx.font="11px sans-serif";
-    var steps=4;
-    for(var s=0;s<=steps;s++){
-      var yv=minV+(maxV-minV)*s/steps; var yy=yAt(yv);
+    var ticks=[130,120,100,90,80,60,40];
+    ticks.forEach(function(yv){
+      var yy=yAt(yv);
       ctx.beginPath(); ctx.moveTo(padL,yy); ctx.lineTo(padL+plotW,yy); ctx.stroke();
-      ctx.textAlign="right"; ctx.textBaseline="middle"; ctx.fillText(Math.round(yv), padL-6, yy);
-    }
+      ctx.textAlign="right"; ctx.textBaseline="middle"; ctx.fillText(yv, padL-6, yy);
+    });
     // x 轴日期标签（抽稀）
     ctx.textAlign="center"; ctx.textBaseline="top"; ctx.fillStyle="#9aa5b1";
     var labelEvery=Math.ceil(n/7);
